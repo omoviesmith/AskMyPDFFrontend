@@ -1,6 +1,8 @@
 import dayjs from "dayjs";
 import classNames from "classnames";
+import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 
 //
@@ -8,6 +10,7 @@ import { RiSendPlaneFill } from "react-icons/ri";
 import { GoThumbsup, GoThumbsdown, GoCopy } from "react-icons/go";
 
 //
+import axiosInstance from "../../utils/axios";
 import copyTextToClipboard from "../../utils/clipboard";
 
 //
@@ -18,6 +21,7 @@ const MAX_LENGTH = 2000;
  */
 export default function CoversationChatBot() {
   const { t } = useTranslation();
+  const queryParams = useParams();
 
   //
   const [question, setQuestion] = useState<string>("");
@@ -27,10 +31,34 @@ export default function CoversationChatBot() {
   //
   const messageListRef = useRef<HTMLDivElement>(null);
 
+  // Query to fetch history, called oncea t the beginning or query change
+  const { isLoading } = useQuery({
+    queryKey: ["get-collection-chat-history", queryParams.id],
+    queryFn: async () => {
+      const response = await axiosInstance.get(
+        `/chathistory/${queryParams.id}`,
+      );
+      return response.data;
+    },
+  });
+
+  // Mutation to ask a new question
+  const mutation = useMutation({
+    mutationFn: async (qn: string) => {
+      console.log({ qn });
+      // TODO:: make api call and add the question to conversation array
+    },
+    onSuccess() {
+      // TODO:: Add the response to the conversation array
+    },
+  });
+
+  //
+  const isInputDisabled = isLoading || mutation.isPending;
+
   //
   function handleKeyUpInput(key: string) {
     if (key !== "Enter") return;
-
     askQuestion();
   }
 
@@ -53,6 +81,8 @@ export default function CoversationChatBot() {
         createdAt: Date.now(),
       },
     ]);
+
+    mutation.mutate(question);
 
     setQuestion("");
   }
@@ -143,6 +173,7 @@ export default function CoversationChatBot() {
           <input
             type="text"
             value={question}
+            disabled={isInputDisabled}
             onChange={(e) => setQuestion(e.target.value)}
             onKeyUp={(e) => handleKeyUpInput(e.key)}
             placeholder={t("conversation.askQuestion")}
@@ -162,7 +193,9 @@ export default function CoversationChatBot() {
 
         <button
           onClick={() => askQuestion()}
-          disabled={!question.length || question.length > MAX_LENGTH}
+          disabled={
+            !question.length || question.length > MAX_LENGTH || isInputDisabled
+          }
           className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-900 p-2 text-gray-100 disabled:cursor-not-allowed disabled:bg-gray-400"
         >
           <RiSendPlaneFill size={28} className="-ml-[2px] mt-[2px]" />
