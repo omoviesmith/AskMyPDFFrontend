@@ -49,7 +49,7 @@ export default function ConversationList() {
               className={classNames(
                 "flex items-center gap-3 rounded px-2 py-2 md:px-4 md:py-3",
                 conversationId === item.id
-                  ? "bg-primary/50 border-primary border shadow"
+                  ? "border border-primary bg-primary/50 shadow"
                   : "border border-gray-100 bg-white shadow-sm hover:bg-gray-200 hover:shadow",
               )}
               to={`/conversations/${item.id}`}
