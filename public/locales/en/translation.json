@@ -10,7 +10,8 @@
     "supportedFormats": "Supported formats: {{formats}}",
     "agreeWith": "By starting a conversation, you agree with our",
     "uploadFromFile": "Upload file",
-    "uploadFromUrl": "Upload from URL"
+    "uploadFromUrl": "Upload from URL",
+    "startConversation": "Start conversation"
   },
   "conversation": {
     "new": "New conversation",

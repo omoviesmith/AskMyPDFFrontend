@@ -108,7 +108,7 @@ export default function FileUploadPage() {
                   onClick={() => navigate("/conversations/1")}
                   className="flex items-center gap-3 rounded-md bg-gray-900 px-6 py-3 text-sm text-gray-100 shadow transition-all duration-300 hover:scale-105 disabled:cursor-not-allowed disabled:bg-gray-300 disabled:hover:scale-100"
                 >
-                  Start Conversation
+                  {t("fileUpload.startConversation")}
                 </button>
               </div>
             </div>
