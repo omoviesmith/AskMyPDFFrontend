@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import classNames from "classnames";
 import { useTranslation } from "react-i18next";
 import { useEffect, useRef, useState } from "react";
@@ -8,7 +9,6 @@ import { GoThumbsup, GoThumbsdown, GoCopy } from "react-icons/go";
 
 //
 import copyTextToClipboard from "../../utils/clipboard";
-import dayjs from "dayjs";
 
 //
 const MAX_LENGTH = 2000;
