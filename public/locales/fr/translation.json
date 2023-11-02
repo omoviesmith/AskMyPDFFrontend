@@ -1,1 +1,22 @@
-{}
+{
+  "general": {
+    "privacyPolicy": "Politique de confidentialité",
+    "terms": "Conditions générales"
+  },
+  "fileUpload": {
+    "uploadDocuments": "Téléchargez vos documents",
+    "limitHint": "Vous pourrez commencer une conversation basée sur le document téléchargé. Vous pouvez mettre à jour votre compte pour augmenter vos limites",
+    "uploadHint": "Cliquez pour télécharger ou faites glisser et déposez",
+    "supportedFormats": "Formats pris en charge : {{formats}}",
+    "agreeWith": "En lançant une conversation, vous acceptez notre",
+    "uploadFromFile": "Télécharger depuis un fichier",
+    "uploadFromUrl": "Télécharger depuis une URL",
+    "startConversation": "Commencer la conversation"
+  },
+  "conversation": {
+    "new": "Nouvelle conversation",
+    "chatbot": "Chatbot",
+    "summary": "Résumer",
+    "askQuestion": "Posez n'importe quelle question concernant votre document"
+  }
+}
