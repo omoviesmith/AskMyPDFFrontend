@@ -52,7 +52,7 @@ export default function FileUploadPage() {
                   "bg-white font-semibold shadow": uploadMode === "file",
                 })}
               >
-                Upload file
+                {t("fileUpload.uploadFromFile")}
               </button>
               <button
                 onClick={() => setUploadMode("url")}
@@ -60,7 +60,7 @@ export default function FileUploadPage() {
                   "bg-white font-semibold shadow": uploadMode === "url",
                 })}
               >
-                Upload from URL
+                {t("fileUpload.uploadFromUrl")}
               </button>
             </div>
           </div>

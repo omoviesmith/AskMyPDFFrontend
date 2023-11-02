@@ -8,7 +8,9 @@
     "limitHint": "You'll be able to start a conversation based on the document uploaded. You can upgrade your account to increase your limits",
     "uploadHint": "Click to Upload or drag and drop",
     "supportedFormats": "Supported formats: {{formats}}",
-    "agreeWith": "By starting a conversation, you agree with our"
+    "agreeWith": "By starting a conversation, you agree with our",
+    "uploadFromFile": "Upload file",
+    "uploadFromUrl": "Upload from URL"
   },
   "conversation": {
     "new": "New conversation",
