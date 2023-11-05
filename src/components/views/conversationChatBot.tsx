@@ -7,11 +7,21 @@ import { useEffect, useRef, useState } from "react";
 
 //
 import { RiSendPlaneFill } from "react-icons/ri";
-import { GoThumbsup, GoThumbsdown, GoCopy } from "react-icons/go";
+import {
+  // GoThumbsup,
+  // GoThumbsdown,
+  GoCopy,
+} from "react-icons/go";
 
 //
 import axiosInstance from "../../utils/axios";
+import { getRandomString } from "../../utils/helper";
 import copyTextToClipboard from "../../utils/clipboard";
+
+import {
+  IApiAskQuestionResponse,
+  IApiChatHistoryResponse,
+} from "../../types/api.types";
 
 //
 const MAX_LENGTH = 2000;
@@ -35,9 +45,27 @@ export default function CoversationChatBot() {
   const { isLoading } = useQuery({
     queryKey: ["get-collection-chat-history", queryParams.id],
     queryFn: async () => {
-      const response = await axiosInstance.get(
+      const response = await axiosInstance.get<IApiChatHistoryResponse>(
         `/chathistory/${queryParams.id}`,
       );
+
+      for (const item of response.data.chat_history) {
+        const newItems = [
+          {
+            id: Date.now().toString() + getRandomString(5),
+            bot: false,
+            message: item.query,
+          },
+          {
+            id: Date.now().toString() + getRandomString(5),
+            bot: true,
+            message: item.query,
+          },
+        ];
+
+        setConversation(newItems);
+      }
+
       return response.data;
     },
   });
@@ -45,11 +73,39 @@ export default function CoversationChatBot() {
   // Mutation to ask a new question
   const mutation = useMutation({
     mutationFn: async (qn: string) => {
-      console.log({ qn });
-      // TODO:: make api call and add the question to conversation array
-    },
-    onSuccess() {
-      // TODO:: Add the response to the conversation array
+      // Adding question to local conversation list
+      setConversation((prev) => [
+        ...prev,
+        {
+          id: Date.now().toString(),
+          bot: false,
+          message: qn,
+          createdAt: Date.now(),
+        },
+      ]);
+
+      // Clearing the question input field
+      setQuestion("");
+
+      // Getting response
+      const response = await axiosInstance.post<IApiAskQuestionResponse>(
+        "/retriever",
+        {
+          collection_name: queryParams.id ?? "",
+          query: qn,
+        },
+      );
+
+      // Adding response to the list
+      setConversation((prev) => [
+        ...prev,
+        {
+          id: Date.now().toString(),
+          bot: true,
+          message: response.data.answer,
+          createdAt: Date.now(),
+        },
+      ]);
     },
   });
 
@@ -64,27 +120,7 @@ export default function CoversationChatBot() {
 
   //
   function askQuestion() {
-    setConversation((prev) => [
-      ...prev,
-      // Question from user
-      {
-        id: Date.now().toString(),
-        bot: false,
-        message: question,
-        createdAt: Date.now(),
-      },
-      // Answer from bot
-      {
-        id: Date.now().toString() + Math.random(),
-        bot: true,
-        message: "This is the reply from the bot",
-        createdAt: Date.now(),
-      },
-    ]);
-
     mutation.mutate(question);
-
-    setQuestion("");
   }
 
   //
@@ -118,6 +154,11 @@ export default function CoversationChatBot() {
   }, [conversation]);
 
   //
+  useEffect(() => {
+    setConversation([]);
+  }, [queryParams.id]);
+
+  //
   return (
     <div className="relative flex h-full flex-grow flex-col">
       <div className="flex flex-grow flex-col gap-5" ref={messageListRef}>
@@ -131,7 +172,7 @@ export default function CoversationChatBot() {
             >
               <div
                 className={classNames(
-                  "mt-1 h-10 w-10 flex-shrink-0 rounded-full bg-red-800",
+                  "mt-1 h-10 w-10 flex-shrink-0 rounded-full bg-primary",
                   { "order-1": !conv.bot },
                 )}
               />
@@ -144,26 +185,28 @@ export default function CoversationChatBot() {
                       <GoCopy size={20} />
                     </button>
 
-                    <button>
+                    {/* <button>
                       <GoThumbsup size={20} />
-                    </button>
+                    </button> */}
 
-                    <button>
+                    {/* <button>
                       <GoThumbsdown size={20} />
-                    </button>
+                    </button> */}
                   </div>
                 )}
               </div>
             </div>
 
-            <p
-              className={classNames(
-                "mt-[6px] text-xs",
-                conv.bot ? "ml-12" : "mr-12 text-right",
-              )}
-            >
-              {dayjs(conv.createdAt).format("hh:mm A")}
-            </p>
+            {conv.createdAt && (
+              <p
+                className={classNames(
+                  "mt-[6px] text-xs",
+                  conv.bot ? "ml-12" : "mr-12 text-right",
+                )}
+              >
+                {dayjs(conv.createdAt).format("hh:mm A")}
+              </p>
+            )}
           </div>
         ))}
       </div>
@@ -177,7 +220,7 @@ export default function CoversationChatBot() {
             onChange={(e) => setQuestion(e.target.value)}
             onKeyUp={(e) => handleKeyUpInput(e.key)}
             placeholder={t("conversation.askQuestion")}
-            className="h-12 w-full rounded-full border border-gray-200 bg-white px-3 py-2 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="h-12 w-full rounded-full border border-gray-200 bg-white px-3 py-2 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:cursor-not-allowed"
           />
           <div
             className={classNames(

@@ -28,7 +28,7 @@ const router = createBrowserRouter([
         element: <ConverstaionListPage />,
       },
       {
-        path: ":conversationId",
+        path: ":id",
         element: <ConverstaionDetailPage />,
       },
     ],

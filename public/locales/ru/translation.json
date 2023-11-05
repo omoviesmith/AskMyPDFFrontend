@@ -11,7 +11,9 @@
     "agreeWith": "Начиная разговор, вы соглашаетесь с нашей",
     "uploadFromFile": "Загрузить файл",
     "uploadFromUrl": "Загрузить по URL",
-    "startConversation": "Начать разговор"
+    "startConversation": "Начать разговор",
+    "uploading": "Загрузка документа...",
+    "processing": "Обработка документа..."
   },
   "conversation": {
     "new": "Новый разговор",

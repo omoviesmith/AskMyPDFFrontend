@@ -22,7 +22,7 @@ export default function Header() {
   //
   return (
     <div className="sticky top-0 flex h-14 flex-shrink-0 items-center justify-between border-b border-gray-200 px-2 py-3 md:px-5 lg:px-10">
-      <div>Ask Your PDF</div>
+      <div>Ask My Document</div>
 
       <div>
         <select

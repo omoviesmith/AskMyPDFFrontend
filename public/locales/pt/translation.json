@@ -11,7 +11,9 @@
     "agreeWith": "Ao iniciar uma conversa, você concorda com nossos",
     "uploadFromFile": "Carregar do arquivo",
     "uploadFromUrl": "Carregar a partir de uma URL",
-    "startConversation": "Iniciar conversa"
+    "startConversation": "Iniciar conversa",
+    "uploading": "Carregando documento...",
+    "processing": "Processando documento..."
   },
   "conversation": {
     "new": "Nova conversa",

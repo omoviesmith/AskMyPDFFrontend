@@ -1,32 +1,59 @@
 import classNames from "classnames";
 import { useTranslation } from "react-i18next";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 //
 import { BsFillChatDotsFill, BsChatLeftDotsFill } from "react-icons/bs";
+import { useEffect, useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import axiosInstance from "../../utils/axios";
+import { snakeCaseToTitleCase } from "../../utils/helper";
 
 /**
  *
  */
 export default function ConversationList() {
-  const { t } = useTranslation();
   const params = useParams();
+  const navigate = useNavigate();
+  const { t } = useTranslation();
 
   //
-  const conversationId = +(params.conversationId ?? "");
+  const [conversationItems, setConversationItems] = useState<string[]>([]);
 
   //
-  const conversationItems = [
-    { title: "Test", id: 1 },
-    { title: "Again", id: 2 },
-    { title: "Another", id: 3 },
-  ];
+  const mutation = useMutation({
+    mutationFn: async () => {
+      const result = await axiosInstance.post("/list_documents");
+      const newData = result.data ?? [];
+
+      // If no converation goto new conversation page
+      if (!newData.length) navigate("/file-upload");
+
+      // Set list of conversation
+      setConversationItems(newData);
+
+      // Navigate to conversation details
+      navigate(`/conversations/${newData[0]}`);
+    },
+    onError: () => {
+      // navigate("/file-upload");
+    },
+  });
+
+  //
+  const conversationId = params.id ?? "";
+
+  //
+  useEffect(() => {
+    mutation.mutate();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   //
   return (
     <div className="min-w-[369px] border-r border-gray-200 bg-gray-50">
       <div className="sticky top-0 h-14 w-full border-b border-gray-200 bg-white px-3 py-4">
-        <p>Ask Your PDF</p>
+        <p>Ask My Document</p>
       </div>
 
       <div className="h-full overflow-y-auto px-3 pb-20 pt-5">
@@ -48,14 +75,16 @@ export default function ConversationList() {
               key={index}
               className={classNames(
                 "flex items-center gap-3 rounded px-2 py-2 md:px-4 md:py-3",
-                conversationId === item.id
+                conversationId?.toLowerCase() === item?.toLowerCase()
                   ? "border border-primary bg-primary/50 shadow"
                   : "border border-gray-100 bg-white shadow-sm hover:bg-gray-200 hover:shadow",
               )}
-              to={`/conversations/${item.id}`}
+              to={`/conversations/${item}`}
             >
               <BsChatLeftDotsFill size={14} className="flex-shrink-0" />
-              <p className="overflow-hidden text-ellipsis">{item.title}</p>
+              <p className="overflow-hidden text-ellipsis">
+                {snakeCaseToTitleCase(item)}
+              </p>
             </Link>
           ))}
         </div>
