@@ -96,12 +96,12 @@ export default function FileUploadPage() {
             <div className="flex h-full flex-col items-center justify-center px-2 py-10 md:px-5 lg:px-10">
               <div className="h-5 w-full overflow-hidden rounded-full border border-gray-300 bg-gray-100 shadow">
                 <div
-                  className="h-full rounded-full bg-primary"
+                  className="h-full rounded-full bg-primary transition-all duration-1000"
                   style={{ width: `${submitProgress}%` }}
                 />
               </div>
 
-              <div className="my-5">
+              <div className="my-5 transition-all duration-1000">
                 {submitProgress < 100 ? (
                   <span>{t("fileUpload.uploading")}</span>
                 ) : (
