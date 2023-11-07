@@ -5,6 +5,7 @@ import { Menu, Transition } from "@headlessui/react";
 
 //
 import { BsThreeDotsVertical } from "react-icons/bs";
+import { useNavigate, useParams } from "react-router-dom";
 
 //
 interface IConversationOptionsProps {
@@ -18,6 +19,16 @@ interface IConversationOptionsProps {
  */
 export default function ConversationOptions(props: IConversationOptionsProps) {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+
+  //
+  const queryParams = useParams();
+  const conversationId = queryParams.id;
+
+  //
+  function uploadDocuments() {
+    navigate(`/file-upload?cId=${conversationId}`);
+  }
 
   //
   return (
@@ -66,6 +77,19 @@ export default function ConversationOptions(props: IConversationOptionsProps) {
                     )}
                   >
                     {t("conversation.delete")}
+                  </button>
+                )}
+              </Menu.Item>
+              <Menu.Item>
+                {({ active }) => (
+                  <button
+                    onClick={() => uploadDocuments()}
+                    className={classNames(
+                      "group flex w-full items-center rounded-md px-2 py-2 text-sm",
+                      { "bg-primary/30 text-gray-800": active },
+                    )}
+                  >
+                    {t("fileUpload.uploadDocuments")}
                   </button>
                 )}
               </Menu.Item>

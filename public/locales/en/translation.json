@@ -1,7 +1,8 @@
 {
   "general": {
     "privacyPolicy": "Privacy policy",
-    "terms": "terms and conditions"
+    "terms": "terms and conditions",
+    "title": "Ask my Document"
   },
   "fileUpload": {
     "uploadDocuments": "Upload your documents",

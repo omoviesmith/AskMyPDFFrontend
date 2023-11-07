@@ -54,7 +54,7 @@ export default function ConversationList() {
   return (
     <div className="min-w-[369px] border-r border-gray-200 bg-gray-50">
       <div className="sticky top-0 h-14 w-full border-b border-gray-200 bg-white px-3 py-4">
-        <p>Ask My Document</p>
+        <p>{t("general.title")}</p>
       </div>
 
       <div className="h-full overflow-y-auto px-3 pb-20 pt-5">

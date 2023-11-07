@@ -1,7 +1,8 @@
 {
   "general": {
     "privacyPolicy": "Política de privacidad",
-    "terms": "Términos y condiciones"
+    "terms": "Términos y condiciones",
+    "title": "Pregunte a mi documento"
   },
   "fileUpload": {
     "uploadDocuments": "Cargar tus documentos",
@@ -9,8 +10,8 @@
     "uploadHint": "Haga clic para cargar o arrastre y suelte",
     "supportedFormats": "Formatos admitidos: {{formats}}",
     "agreeWith": "Al iniciar una conversación, aceptas nuestros",
-    "uploadFromFile": "Cargar archivo",
-    "uploadFromUrl": "Cargar desde URL",
+    "uploadFromFile": "Cargar documentos desde archivo",
+    "uploadFromUrl": "Cargar PDF escaneado desde URL",
     "startConversation": "Iniciar conversación",
     "uploading": "Subiendo documento...",
     "processing": "Procesando documento..."

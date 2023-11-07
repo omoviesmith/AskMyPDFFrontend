@@ -1,7 +1,8 @@
 {
   "general": {
     "privacyPolicy": "Politique de confidentialité",
-    "terms": "Conditions générales"
+    "terms": "Conditions générales",
+    "title": "Demandez à mon document"
   },
   "fileUpload": {
     "uploadDocuments": "Téléchargez vos documents",
@@ -9,8 +10,8 @@
     "uploadHint": "Cliquez pour télécharger ou faites glisser et déposez",
     "supportedFormats": "Formats pris en charge : {{formats}}",
     "agreeWith": "En lançant une conversation, vous acceptez notre",
-    "uploadFromFile": "Télécharger depuis un fichier",
-    "uploadFromUrl": "Télécharger depuis une URL",
+    "uploadFromFile": "Cargar documentos desde archivo",
+    "uploadFromUrl": "Cargar PDF escaneado desde URL",
     "startConversation": "Commencer la conversation",
     "uploading": "Chargement du document...",
     "processing": "Traitement du document..."
