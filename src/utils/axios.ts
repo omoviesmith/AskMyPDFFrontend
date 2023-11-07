@@ -2,7 +2,7 @@ import axios from "axios";
 
 //
 const axiosInstance = axios.create({
-  baseURL: "https://askmydocument.onrender.com/",
+  baseURL: "https://askyourdocument.onrender.com",
   withCredentials: true,
 });
 

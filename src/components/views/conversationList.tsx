@@ -1,7 +1,7 @@
+import { useState } from "react";
 import classNames from "classnames";
-import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useMutation } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 //
@@ -15,17 +15,21 @@ import { snakeCaseToTitleCase } from "../../utils/helper";
  *
  */
 export default function ConversationList() {
-  const params = useParams();
   const navigate = useNavigate();
   const { t } = useTranslation();
+
+  //
+  const params = useParams();
+  const conversationId = params.id ?? "";
 
   //
   const [conversationItems, setConversationItems] = useState<string[]>([]);
 
   //
-  const mutation = useMutation({
-    mutationFn: async () => {
-      const result = await axiosInstance.post("/list_documents");
+  useQuery({
+    queryKey: ["get-document-list"],
+    queryFn: async () => {
+      const result = await axiosInstance.get<string[]>("/list_documents");
       const newData = result.data ?? [];
 
       // If no converation goto new conversation page
@@ -35,21 +39,16 @@ export default function ConversationList() {
       setConversationItems(newData);
 
       // Navigate to conversation details
-      navigate(`/conversations/${newData[0]}`);
-    },
-    onError: () => {
-      // navigate("/file-upload");
+      if (
+        !conversationId ||
+        (conversationId && !newData.includes(conversationId))
+      ) {
+        navigate(`/conversations/${newData[0]}`);
+      }
+
+      return newData;
     },
   });
-
-  //
-  const conversationId = params.id ?? "";
-
-  //
-  useEffect(() => {
-    mutation.mutate();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   //
   return (

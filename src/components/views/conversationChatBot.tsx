@@ -2,8 +2,11 @@ import dayjs from "dayjs";
 import classNames from "classnames";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useMutation, useQuery } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
+import { useMutation, useQuery } from "@tanstack/react-query";
+
+//
+import Loading from "../reusable/loading";
 
 //
 import { RiSendPlaneFill } from "react-icons/ri";
@@ -42,13 +45,18 @@ export default function CoversationChatBot() {
   const messageListRef = useRef<HTMLDivElement>(null);
 
   // Query to fetch history, called oncea t the beginning or query change
-  const { isLoading } = useQuery({
+  const { isFetching } = useQuery({
     queryKey: ["get-collection-chat-history", queryParams.id],
     queryFn: async () => {
       const response = await axiosInstance.get<IApiChatHistoryResponse>(
         `/chathistory/${queryParams.id}`,
       );
 
+      //
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const newArrayItems: any[] = [];
+
+      //
       for (const item of response.data.chat_history) {
         const newItems = [
           {
@@ -59,12 +67,13 @@ export default function CoversationChatBot() {
           {
             id: Date.now().toString() + getRandomString(5),
             bot: true,
-            message: item.query,
+            message: item.response,
           },
         ];
 
-        setConversation(newItems);
+        newArrayItems.push(...newItems);
       }
+      setConversation(newArrayItems);
 
       return response.data;
     },
@@ -110,7 +119,7 @@ export default function CoversationChatBot() {
   });
 
   //
-  const isInputDisabled = isLoading || mutation.isPending;
+  const isInputDisabled = isFetching || mutation.isPending;
 
   //
   function handleKeyUpInput(key: string) {
@@ -209,6 +218,8 @@ export default function CoversationChatBot() {
             )}
           </div>
         ))}
+
+        {isInputDisabled && <Loading />}
       </div>
 
       <div className="sticky bottom-0 flex w-full gap-3 bg-gray-100 pb-5 pt-3">

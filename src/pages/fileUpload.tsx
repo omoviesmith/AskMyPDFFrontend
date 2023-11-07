@@ -1,14 +1,17 @@
-import { useEffect, useState } from "react";
 import classNames from "classnames";
+import { toast } from "react-toastify";
+import { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
 
 //
 import { FiUploadCloud } from "react-icons/fi";
-import { useMutation } from "@tanstack/react-query";
 import axiosInstance from "../utils/axios";
-import { toast } from "react-toastify";
+
+//
+import type { IUploadDocumentResponse } from "../types/api.types";
 
 /**
  *
@@ -34,7 +37,7 @@ export default function FileUploadPage() {
 
   //
   const mutation = useMutation({
-    mutationFn: () => {
+    mutationFn: async () => {
       setSubmitProgress(0);
 
       //
@@ -43,24 +46,33 @@ export default function FileUploadPage() {
         formItem.set("input_pdf_file", file);
       }
 
-      return axiosInstance.post(`/upload_ocr`, formItem, {
-        onUploadProgress: (progressEvent) => {
-          console.log({ progressEvent });
-          const percentCompleted = Math.max(
-            Math.min(
-              Math.round(
-                (progressEvent.loaded * 100) / (progressEvent.total ?? 100),
+      const response = await axiosInstance.post<IUploadDocumentResponse>(
+        `/upload_ocr`,
+        formItem,
+        {
+          onUploadProgress: (progressEvent) => {
+            console.log({ progressEvent });
+            const percentCompleted = Math.max(
+              Math.min(
+                Math.round(
+                  (progressEvent.loaded * 100) / (progressEvent.total ?? 100),
+                ),
+                100,
               ),
-              100,
-            ),
-            0,
-          );
-          setSubmitProgress(percentCompleted);
+              0,
+            );
+            setSubmitProgress(percentCompleted);
+          },
         },
-      });
+      );
+
+      return response.data;
     },
     onSuccess: (data) => {
-      console.log({ data });
+      const conversationId =
+        data["Created a new collection"] ?? data["Created a new collection "];
+
+      navigate(`/conversations/${conversationId}`);
     },
     onError: () => {
       toast.error("Unable to update the file");

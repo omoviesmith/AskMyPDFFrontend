@@ -19,6 +19,8 @@
     "new": "New conversation",
     "chatbot": "Chatbot",
     "summary": "Summarize",
-    "askQuestion": "Ask any question about your document"
+    "askQuestion": "Ask any question about your document",
+    "clear": "Clear chat history",
+    "delete": "Delete document"
   }
 }

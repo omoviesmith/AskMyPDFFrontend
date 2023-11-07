@@ -19,6 +19,8 @@
     "new": "Nouvelle conversation",
     "chatbot": "Chatbot",
     "summary": "Résumer",
-    "askQuestion": "Posez n'importe quelle question concernant votre document"
+    "askQuestion": "Posez n'importe quelle question concernant votre document",
+    "clear": "Effacer l'historique du chat",
+    "delete": "Supprimer le document"
   }
 }
