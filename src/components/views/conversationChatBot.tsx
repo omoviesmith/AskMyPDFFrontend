@@ -18,6 +18,7 @@ import {
 
 //
 import axiosInstance from "../../utils/axios";
+import { DEFAUL_QUERY } from "../../utils/constants";
 import { getRandomString } from "../../utils/helper";
 import copyTextToClipboard from "../../utils/clipboard";
 
@@ -58,24 +59,23 @@ export default function CoversationChatBot() {
 
       //
       for (const item of response.data.chat_history) {
-        const newItems = [
-          {
+        if (item.query !== DEFAUL_QUERY) {
+          newArrayItems.push({
             id: Date.now().toString() + getRandomString(5),
             bot: false,
             message: item.query,
-          },
-          {
-            id: Date.now().toString() + getRandomString(5),
-            bot: true,
-            message: item.response,
-          },
-        ];
+          });
+        }
 
-        newArrayItems.push(...newItems);
+        newArrayItems.push({
+          id: Date.now().toString() + getRandomString(5),
+          bot: true,
+          message: item.response,
+        });
       }
       setConversation(newArrayItems);
 
-      return response.data;
+      return newArrayItems;
     },
   });
 
