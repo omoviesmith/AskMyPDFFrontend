@@ -186,7 +186,7 @@ export default function CoversationChatBot() {
                 )}
               />
               <div className="w-full max-w-xl cursor-default rounded-lg border border-gray-100 bg-white px-5 py-3 shadow-sm">
-                <p className="text-md">{conv.message}</p>
+                <p className="text-md whitespace-pre-line">{conv.message}</p>
 
                 {conv.bot && (
                   <div className="mt-5 flex justify-end gap-3 text-gray-500">
