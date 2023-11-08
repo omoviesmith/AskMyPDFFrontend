@@ -22,6 +22,7 @@
     "summary": "Summarize",
     "askQuestion": "Ask any question about your document",
     "clear": "Clear chat history",
-    "delete": "Delete document"
+    "delete": "Delete document",
+    "addDocuments": "Add document"
   }
 }

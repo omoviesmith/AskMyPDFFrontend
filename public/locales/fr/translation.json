@@ -22,6 +22,7 @@
     "summary": "Résumer",
     "askQuestion": "Posez n'importe quelle question concernant votre document",
     "clear": "Effacer l'historique du chat",
-    "delete": "Supprimer le document"
+    "delete": "Supprimer le document",
+    "addDocuments": "Ajouter un document"
   }
 }

@@ -57,6 +57,19 @@ export default function ConversationOptions(props: IConversationOptionsProps) {
               <Menu.Item>
                 {({ active }) => (
                   <button
+                    onClick={() => uploadDocuments()}
+                    className={classNames(
+                      "group flex w-full items-center rounded-md px-2 py-2 text-sm",
+                      { "bg-primary/30 text-gray-800": active },
+                    )}
+                  >
+                    {t("conversation.addDocuments")}
+                  </button>
+                )}
+              </Menu.Item>
+              <Menu.Item>
+                {({ active }) => (
+                  <button
                     onClick={() => props.onClear?.()}
                     className={classNames(
                       "group flex w-full items-center rounded-md px-2 py-2 text-sm",
@@ -77,19 +90,6 @@ export default function ConversationOptions(props: IConversationOptionsProps) {
                     )}
                   >
                     {t("conversation.delete")}
-                  </button>
-                )}
-              </Menu.Item>
-              <Menu.Item>
-                {({ active }) => (
-                  <button
-                    onClick={() => uploadDocuments()}
-                    className={classNames(
-                      "group flex w-full items-center rounded-md px-2 py-2 text-sm",
-                      { "bg-primary/30 text-gray-800": active },
-                    )}
-                  >
-                    {t("fileUpload.uploadDocuments")}
                   </button>
                 )}
               </Menu.Item>

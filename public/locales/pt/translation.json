@@ -22,6 +22,7 @@
     "summary": "Resumir",
     "askQuestion": "Faça qualquer pergunta sobre o seu documento",
     "clear": "Limpar histórico do chat",
-    "delete": "Apagar documento"
+    "delete": "Apagar documento",
+    "addDocuments": "Adicionar documento"
   }
 }
