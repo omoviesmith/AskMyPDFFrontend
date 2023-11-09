@@ -15,6 +15,8 @@ export interface IApiAskQuestionResponse {
 export interface IUploadDocumentResponse {
   "Created a new collection ": string;
   "Created a new collection": string;
+  "Updated an existing collection ": string;
+  "Updated an existing collection": string;
   answer: string;
 }
 

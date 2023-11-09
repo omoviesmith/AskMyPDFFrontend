@@ -33,9 +33,11 @@ export default function FileUploadPage() {
   //
   const uploadURLBase =
     uploadMode === "document" ? "/upload_anydoc" : "/upload_ocr";
+  const updateURLBase =
+    uploadMode === "document" ? "/update_anydoc" : "/update_ocr";
 
   const uploadURL = collectionId
-    ? `${uploadURLBase}/${encodeURIComponent(collectionId)}`
+    ? `${updateURLBase}/${encodeURIComponent(collectionId)}`
     : uploadURLBase;
 
   //
@@ -80,11 +82,15 @@ export default function FileUploadPage() {
     },
     onSuccess: (data) => {
       const conversationId =
-        data["Created a new collection"] ?? data["Created a new collection "];
+        data["Created a new collection"] ??
+        data["Created a new collection "] ??
+        data["Updated an existing collection"] ??
+        data["Updated an existing collection "];
 
       navigate(`/conversations/${conversationId}`);
     },
-    onError: () => {
+    onError: (error) => {
+      console.log(error);
       toast.error("Unable to update the file");
     },
   });
