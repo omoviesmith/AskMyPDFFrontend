@@ -8,6 +8,8 @@ import { useMutation } from "@tanstack/react-query";
 
 //
 import { FiUploadCloud } from "react-icons/fi";
+
+//
 import axiosInstance from "../utils/axios";
 
 //
@@ -87,7 +89,7 @@ export default function FileUploadPage() {
         data["Updated an existing collection"] ??
         data["Updated an existing collection "];
 
-      navigate(`/conversations/${conversationId}`);
+      navigate(`/conversations/${encodeURIComponent(conversationId)}`);
     },
     onError: (error) => {
       console.log(error);

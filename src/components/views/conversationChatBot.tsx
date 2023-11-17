@@ -18,7 +18,7 @@ import {
 
 //
 import axiosInstance from "../../utils/axios";
-import { DEFAUL_QUERY } from "../../utils/constants";
+import { DEFAUL_QUERIES } from "../../utils/constants";
 import { getRandomString } from "../../utils/helper";
 import copyTextToClipboard from "../../utils/clipboard";
 
@@ -59,7 +59,7 @@ export default function CoversationChatBot() {
 
       //
       for (const item of response.data.chat_history) {
-        if (item.query !== DEFAUL_QUERY) {
+        if (!DEFAUL_QUERIES.includes(item.query.trim())) {
           newArrayItems.push({
             id: Date.now().toString() + getRandomString(5),
             bot: false,
