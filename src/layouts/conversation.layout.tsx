@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { Outlet } from "react-router-dom";
+import { isDesktop } from "react-device-detect";
 
 //
 import Header from "../components/app/header";
@@ -8,12 +10,21 @@ import ConversationList from "../components/views/conversationList";
  *
  */
 export default function ConversationLayout() {
+  const [isListMinimized, setIsListMinimized] = useState<boolean>(false);
+
+  //
+  function onToggle() {
+    if (isDesktop) return;
+    setIsListMinimized((prev) => !prev);
+  }
+
+  //
   return (
     <div className="flex h-screen w-full overflow-hidden">
-      <ConversationList />
+      {!isListMinimized && <ConversationList />}
 
       <div className="flex w-full flex-col">
-        <Header />
+        <Header onToggle={onToggle} />
 
         <div
           id="my-outlet-item"
