@@ -1,17 +1,17 @@
 {
   "general": {
     "privacyPolicy": "Política de privacidad",
-    "terms": "Términos y condiciones",
-    "title": "Pregunte a mi documento"
+    "terms": "términos y condiciones",
+    "title": "Preguntar mi documento"
   },
   "fileUpload": {
-    "uploadDocuments": "Cargar tus documentos",
+    "uploadDocuments": "Sube tus documentos",
     "limitHint": "Podrás iniciar una conversación basada en el documento cargado. Puedes actualizar tu cuenta para aumentar tus límites",
-    "uploadHint": "Haga clic para cargar o arrastre y suelte",
+    "uploadHint": "Haz clic para cargar o arrastra y suelta",
     "supportedFormats": "Formatos admitidos: {{formats}}",
-    "agreeWith": "Al iniciar una conversación, aceptas nuestros",
-    "uploadFromFile": "Cargar documentos desde archivo",
-    "uploadFromUrl": "Cargar PDF escaneado desde URL",
+    "agreeWith": "Al iniciar una conversación, estás de acuerdo con nuestro",
+    "uploadFromFile": "Subir Documentos",
+    "uploadFromUrl": "Subir PDF escaneado",
     "startConversation": "Iniciar conversación",
     "uploading": "Subiendo documento...",
     "processing": "Procesando documento..."
@@ -20,9 +20,9 @@
     "new": "Nueva conversación",
     "chatbot": "Chatbot",
     "summary": "Resumir",
-    "askQuestion": "Haga cualquier pregunta sobre su documento",
+    "askQuestion": "Haz cualquier pregunta sobre tu documento",
     "clear": "Borrar historial de chat",
     "delete": "Eliminar documento",
-    "addDocuments": "Añadir documento"
+    "addDocuments": "Agregar documento"
   }
 }
