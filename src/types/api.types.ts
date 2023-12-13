@@ -18,6 +18,7 @@ export interface IUploadDocumentResponse {
   "Updated an existing collection ": string;
   "Updated an existing collection": string;
   answer: string;
+  error?: string;
 }
 
 export interface ISummarizeResponse {

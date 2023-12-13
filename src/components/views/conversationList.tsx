@@ -1,5 +1,5 @@
-import { useState } from "react";
 import classNames from "classnames";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -26,29 +26,35 @@ export default function ConversationList() {
   const [conversationItems, setConversationItems] = useState<string[]>([]);
 
   //
-  useQuery({
+  const { data } = useQuery({
     queryKey: ["get-document-list"],
     queryFn: async () => {
       const result = await axiosInstance.get<string[]>("/list_documents");
       const newData = result.data ?? [];
 
-      // If no converation goto new conversation page
-      if (!newData.length) navigate("/file-upload");
-
-      // Set list of conversation
-      setConversationItems(newData);
-
-      // Navigate to conversation details
-      if (
-        !conversationId ||
-        (conversationId && !newData.includes(conversationId))
-      ) {
-        navigate(`/conversations/${encodeURIComponent(newData[0])}`);
-      }
-
       return newData;
     },
   });
+
+  //
+  useEffect(() => {
+    if (!data) return;
+
+    // If no converation goto new conversation page
+    if (!data.length) {
+      navigate("/file-upload");
+      return;
+    }
+
+    // Set list of conversation
+    setConversationItems(data);
+
+    // Navigate to conversation details
+    if (!conversationId || (conversationId && !data.includes(conversationId))) {
+      navigate(`/conversations/${encodeURIComponent(data[0])}`);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
 
   //
   return (

@@ -27,17 +27,17 @@ export default function FileUploadPage() {
   const collectionId = params.get("cId");
 
   //
+  const [inputUrl, setInputUrl] = useState<string>("");
   const [submitProgress, setSubmitProgress] = useState<number>(20);
-  const [uploadMode, setUploadMode] = useState<"document" | "scanned">(
-    "document",
-  );
+  const [uploadMode, setUploadMode] = useState<"document" | "url">("document");
 
   //
   const uploadURLBase =
-    uploadMode === "document" ? "/upload_anydoc" : "/upload_ocr";
+    uploadMode === "document" ? "/upload_anydoc" : "/enter_url";
   const updateURLBase =
-    uploadMode === "document" ? "/update_anydoc" : "/update_ocr";
+    uploadMode === "document" ? "/update_anydoc" : "/enter_url";
 
+  //
   const uploadURL = collectionId
     ? `${updateURLBase}/${encodeURIComponent(collectionId)}`
     : uploadURLBase;
@@ -56,9 +56,14 @@ export default function FileUploadPage() {
       setSubmitProgress(0);
 
       //
-      const formItem = new FormData();
-      for (const file of acceptedFiles) {
-        formItem.set("input_pdf_file", file);
+      let formItem;
+      if (uploadMode === "document") {
+        formItem = new FormData();
+        for (const file of acceptedFiles) {
+          formItem.set("input_pdf_file", file);
+        }
+      } else {
+        formItem = { url: inputUrl };
       }
 
       const response = await axiosInstance.post<IUploadDocumentResponse>(
@@ -83,6 +88,9 @@ export default function FileUploadPage() {
       return response.data;
     },
     onSuccess: (data) => {
+      if (data.error) return;
+
+      //
       const conversationId =
         data["Created a new collection"] ??
         data["Created a new collection "] ??
@@ -97,7 +105,15 @@ export default function FileUploadPage() {
     },
   });
 
+  //
   const isSubmitting = mutation.isPending;
+  const isSubmitDisabled = isSubmitting || !inputUrl.length;
+
+  //
+  function submitUrl() {
+    if (isSubmitting) return;
+    mutation.mutate();
+  }
 
   //
   useEffect(() => {
@@ -156,9 +172,9 @@ export default function FileUploadPage() {
                   {t("fileUpload.uploadFromFile")}
                 </button>
                 <button
-                  onClick={() => setUploadMode("scanned")}
+                  onClick={() => setUploadMode("url")}
                   className={classNames("rounded-full px-5 py-3 text-sm", {
-                    "bg-white font-semibold shadow": uploadMode === "scanned",
+                    "bg-white font-semibold shadow": uploadMode === "url",
                   })}
                 >
                   {t("fileUpload.uploadFromUrl")}
@@ -167,31 +183,53 @@ export default function FileUploadPage() {
             </div>
 
             {/* Actual dropzone */}
-            <div className="p-2 md:p-5 lg:p-10">
-              <div
-                {...getRootProps({
-                  className:
-                    "flex h-60 cursor-pointer items-center justify-center rounded-xl border border-dashed border-gray-300 bg-gray-50 p-5",
-                })}
-              >
-                <input {...getInputProps()} />
+            {uploadMode === "document" && (
+              <div className="p-2 md:p-5 lg:p-10">
+                <div
+                  {...getRootProps({
+                    className:
+                      "flex h-60 cursor-pointer items-center justify-center rounded-xl border border-dashed border-gray-300 bg-gray-50 p-5",
+                  })}
+                >
+                  <input {...getInputProps()} />
 
-                <div className="flex flex-col items-center justify-center">
-                  <div className="mb-5 rounded-full bg-gray-100 p-3">
-                    <div className="rounded-full bg-gray-200 p-3 text-gray-600">
-                      <FiUploadCloud size={32} />
+                  <div className="flex flex-col items-center justify-center">
+                    <div className="mb-5 rounded-full bg-gray-100 p-3">
+                      <div className="rounded-full bg-gray-200 p-3 text-gray-600">
+                        <FiUploadCloud size={32} />
+                      </div>
                     </div>
-                  </div>
 
-                  <p className="text-sm">{t("fileUpload.uploadHint")}</p>
-                  <p className="mt-1 text-xs">
-                    {t("fileUpload.supportedFormats", {
-                      formats: "'.pdf', '.txt', '.csv'",
-                    })}
-                  </p>
+                    <p className="text-sm">{t("fileUpload.uploadHint")}</p>
+                    <p className="mt-1 text-xs">
+                      {t("fileUpload.supportedFormats", {
+                        formats: "'.pdf', '.txt', '.csv'",
+                      })}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
+
+            {uploadMode === "url" && (
+              <div className="p-2 md:p-5 lg:p-10">
+                <input
+                  value={inputUrl}
+                  onChange={(e) => setInputUrl(e.target.value)}
+                  className="w-full rounded border border-gray-300 focus:border-blue-400 focus:outline-none focus:ring-0"
+                />
+
+                <div className="my-10 flex justify-end">
+                  <button
+                    disabled={isSubmitDisabled}
+                    onClick={submitUrl}
+                    className="flex items-center gap-3 rounded-full px-6 py-3 text-sm shadow transition-all duration-300 enabled:bg-gray-900 enabled:text-gray-100 enabled:hover:scale-[1.03] disabled:cursor-not-allowed disabled:bg-gray-700 disabled:text-gray-200"
+                  >
+                    Submit
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         )}
 
